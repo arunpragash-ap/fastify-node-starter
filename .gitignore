@@ -1,0 +1,5 @@
+node_modules/
+dist/
+out/
+.env
+backend_auth_api.postman_collection.json
