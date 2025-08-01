@@ -1,13 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { verifyJwt } from "../utils/jwt";
 
-// Extend FastifyRequest interface to include user property
-declare module "fastify" {
-  interface FastifyRequest {
-    user?: { userId?: string; [key: string]: any };
-  }
-}
-
 /**
  * Authentication middleware that validates JWT tokens
  * and adds the userId to the request object
@@ -31,6 +24,9 @@ export const authenticate = async (
     }
 
     const token = parts[1];
+    if (!token) {
+      return reply.status(401).send({ error: "Token missing" });
+    }
     const payload = verifyJwt(token);
 
     if (!payload || !payload.userId) {

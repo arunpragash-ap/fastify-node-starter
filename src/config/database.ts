@@ -5,7 +5,7 @@ import 'reflect-metadata';
 import 'dotenv/config';
 export const AppDataSource = new DataSource({
   type: 'mysql',
-  url: 'mysql://lemon:lemon_password@localhost:3306/lemon_management',
+  url: 'mysql://sago_factory:sago_factory@localhost:3306/b_sago_factory',
   entities: [User, Session],
   synchronize: true, // Use migrations in production
   logging: false,

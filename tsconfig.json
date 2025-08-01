@@ -1,15 +1,22 @@
-
 {
   "compilerOptions": {
     "target": "ESNext",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
-    "strict": true,
+    "strict": true,                          // umbrella for all strict checks
+    "strictNullChecks": true,               // disallow null/undefined where not explicit
+    "noImplicitAny": true,                  // errors when any is implied
+    "noImplicitThis": true,                 // `this` must be typed
+    "alwaysStrict": true,                   // emit "use strict" and parse in strict mode
+    "strictBindCallApply": true,            // stricter checking of .bind/.call/.apply
+    "strictFunctionTypes": true,            // function parameter bivariance safety
+    "strictPropertyInitialization": true,   // ensure class properties are initialized
+    "noUncheckedIndexedAccess": true,       // indexed access returns possibly undefined
+    "exactOptionalPropertyTypes": true,     // differentiate between optional and undefined
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "strictPropertyInitialization": false,
     "outDir": "./dist"
   },
   "include": ["src/**/*.ts"],

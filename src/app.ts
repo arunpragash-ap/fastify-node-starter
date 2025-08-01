@@ -4,15 +4,14 @@ import jwt from "@fastify/jwt";
 import { rateLimit } from "./middleware/rateLimit";
 import { AppDataSource } from "./config/database";
 import "dotenv/config";
-import authRoutes from "./routes/auth";
-import usersRoutes from "./routes/users";
-import mfaRoutes from "./routes/mfa";
+import routes from "./routes";
+import { sendEmail } from "./utils/email";
 
 const app = Fastify({ logger: true });
 
 // Register CORS
 app.register(cors, {
-  origin: process.env.CORS_ORIGIN || "http://localhost:3001",
+  origin: process.env.CORS_ORIGIN || "http://localhost:3000",
   credentials: true,
 });
 
@@ -32,10 +31,7 @@ app.addHook(
 );
 
 // Register routes
-app.register(authRoutes, { prefix: "/auth" });
-app.register(usersRoutes, { prefix: "/users" });
-app.register(mfaRoutes, { prefix: "/auth/mfa" });
-
+app.register(routes, { prefix: "/api"});
 // Health check route
 app.get("/health", async (request, reply) => {
   return { status: "ok", uptime: process.uptime() };
@@ -46,6 +42,7 @@ const start = async () => {
   try {
     await AppDataSource.initialize();
     app.log.info("Database connected");
+     
     await app.listen({
       port: Number(process.env.PORT) || 3000,
       host: "0.0.0.0",
@@ -69,3 +66,4 @@ process.on("SIGTERM", async () => {
   await app.close();
   process.exit(0);
 });
+
