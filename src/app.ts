@@ -8,10 +8,17 @@ import routes from "./routes";
 import { sendEmail } from "./utils/email";
 
 const app = Fastify({ logger: true });
-
+const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000")
+  .split(",");
 // Register CORS
 app.register(cors, {
-  origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+  origin: (origin, cb) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      cb(null, true); // Allow request
+    } else {
+      cb(new Error("Not allowed by CORS"), false);
+    }
+  },
   credentials: true,
 });
 

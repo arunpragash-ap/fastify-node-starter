@@ -3,6 +3,7 @@ import { FastifyInstance } from 'fastify';
 import authRoutes from './authRoutes';
 import usersRoutes from './users';
 import mfaRoutes from './mfa/index';
+import optionRoutes from './optionRoutes';
 
 export default async function (fastify: FastifyInstance) {
   fastify.get('/', async (request, reply) => {
@@ -12,4 +13,5 @@ export default async function (fastify: FastifyInstance) {
 fastify.register(authRoutes, { prefix: "/auth" });
 fastify.register(usersRoutes, { prefix: "/users" });
 fastify.register(mfaRoutes, { prefix: "/auth/mfa" });
+fastify.register(optionRoutes, { prefix: "/options" });
 }
