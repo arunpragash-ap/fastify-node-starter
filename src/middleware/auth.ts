@@ -8,7 +8,7 @@ import { verifyJwt } from "../utils/jwt";
 export const authenticate = async (
   request: FastifyRequest,
   reply: FastifyReply,
-) => {
+): Promise<void> => {
   try {
     // Extract the authorization header
     const authHeader = request.headers.authorization;
@@ -39,6 +39,6 @@ export const authenticate = async (
     // Continue to the route handler
     return;
   } catch (error) {
-    return reply.status(401).send({ error: "Authentication failed" });
+    return reply.status(401).send({ error: "Authentication failed", message:error });
   }
 };

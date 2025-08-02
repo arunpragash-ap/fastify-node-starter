@@ -18,6 +18,27 @@ export async function forgotPassword({ email }: { email: string }) {
   await sendEmail(email, 'Password Reset OTP', `<p>Your OTP is: <b>${otp}</b></p>`);
   return true;
 }
+export async function verifyForgotOtp({ email, otp }: { email: string; otp: string }) {
+  const userRepo = userRepository();
+  const user = await userRepo.findOne({
+    where: { email },
+    select: [
+      'id',
+      'email',
+      'forgotPasswordOtp',
+      'forgotPasswordExpires',
+    ],
+  });
+
+  console.log(user, otp);
+
+  if (!user || user.forgotPasswordOtp !== otp) throw new Error('Invalid OTP');
+  if (user.forgotPasswordExpires! < new Date())
+    throw new TokenExpiredError('OTP expired');
+
+  return true;
+}
+
 
 export async function resetPassword({
   email,
@@ -29,7 +50,12 @@ export async function resetPassword({
   newPassword: string;
 }) {
   const userRepo = userRepository();
-  const user = await userRepo.findOneBy({ email });
+  const user = await userRepo.findOne({where:{ email },select: [
+      'id',
+      'email',
+      'forgotPasswordOtp',
+      'forgotPasswordExpires',
+    ]});
   if (!user || (user as any).forgotPasswordOtp !== otp) throw new Error('Invalid OTP');
   if ((user as any).forgotPasswordExpires < new Date())
     throw new TokenExpiredError('OTP expired');

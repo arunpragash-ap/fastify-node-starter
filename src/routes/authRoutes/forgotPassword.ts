@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { forgotPassword, resetPassword } from "../../services/AuthService";
+import { forgotPassword, resetPassword, verifyForgotOtp } from "../../services/AuthService";
 
 export default async function forgotPasswordRoutes(app: FastifyInstance) {
 
@@ -16,7 +16,12 @@ export default async function forgotPasswordRoutes(app: FastifyInstance) {
     }
   });
 
-  app.post("/forgot-password/verify", async (request, reply) => {
+  app.post("/forgot-password/verifyOtp", async(request, reply)=>{
+    const { email, otp }: { email: string; otp: string } = request.body as any;
+    await verifyForgotOtp({email, otp });
+  })
+
+  app.post("/reset-password", async (request, reply) => {
     try {
       const { email, otp, newPassword } = request.body as Record<string, string>;
       if (!email || !otp || !newPassword) {

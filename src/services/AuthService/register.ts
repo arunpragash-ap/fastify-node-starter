@@ -31,7 +31,7 @@ export async function registerWithCode({
     emailVerificationExpires: expires,
   });
   await userRepo.save(user);
-await sendEmail(
+  await sendEmail(
     email,
     `Verify your email - ${verificationCode}`,
     `
@@ -60,7 +60,7 @@ await sendEmail(
         </p>
     </div>
     `
-);
+  );
 
   return { id: user.id, email: user.email, username: user.username };
 }

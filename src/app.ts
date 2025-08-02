@@ -5,7 +5,6 @@ import { rateLimit } from "./middleware/rateLimit";
 import { AppDataSource } from "./config/database";
 import "dotenv/config";
 import routes from "./routes";
-import { sendEmail } from "./utils/email";
 
 const app = Fastify({ logger: true });
 const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000")
@@ -40,12 +39,12 @@ app.addHook(
 // Register routes
 app.register(routes, { prefix: "/api"});
 // Health check route
-app.get("/health", async (request, reply) => {
+app.get("/health", async (_request, _reply) => {
   return { status: "ok", uptime: process.uptime() };
 });
 
 // Start server after DB connection
-const start = async () => {
+const start = async (): Promise<void> => {
   try {
     await AppDataSource.initialize();
     app.log.info("Database connected");

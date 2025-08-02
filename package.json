@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
-    "build": "tsc",
     "bundle": "node build.js",
     "build:bundle": "npm run build && npm run bundle",
     "start": "node dist/app.js",
@@ -13,6 +12,8 @@
     "lint": "eslint . --ext .ts",
     "test": "jest",
     "openapi": "npx swagger-jsdoc -d swaggerDef.js -o openapi.json"
+     ,"build": "tsc --noEmit",
+    "check": "pnpm run lint && pnpm run build"
   },
   "keywords": [],
   "author": "",
@@ -47,10 +48,10 @@
     "@types/nodemailer": "^6.4.17",
     "@types/qrcode": "^1.5.5",
     "@types/speakeasy": "^2.0.10",
-    "@typescript-eslint/eslint-plugin": "^8.18.2",
-    "@typescript-eslint/parser": "^8.18.2",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0",
     "esbuild": "^0.25.8",
-    "eslint": "^9.18.0",
+    "eslint": "^9.31.0",
     "jest": "^29.7.0",
     "swagger-jsdoc": "^6.2.8",
     "ts-jest": "^29.2.0",
