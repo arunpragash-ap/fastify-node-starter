@@ -33,7 +33,7 @@ export async function registerWithCode({
   await userRepo.save(user);
 await sendEmail(
     email,
-    'Verify your email',
+    `Verify your email - ${verificationCode}`,
     `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #333;">Email Verification</h2>

@@ -2,9 +2,9 @@ import { FastifyInstance } from "fastify";
 import { authenticate } from "../../middleware/auth";
 import { verifyMfa } from "../../services/MfaService";
 
-export default async function verifyMfaRoute(app: FastifyInstance) {
+export default async function verifyMfaRoute(fastify: FastifyInstance) {
 
-  app.post("/verify", { preHandler: authenticate }, async (request, reply) => {
+  fastify.post("/verify", { preHandler: authenticate }, async (request, reply) => {
     try {
       const { token } = request.body as Record<string, string>;
       const userId = request.user!.userId;
