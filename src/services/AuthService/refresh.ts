@@ -3,7 +3,7 @@ import { userRepository } from '../../repositories/userRepository';
 import { signJwt } from '../../utils/jwt';
 import { InvalidCredentialsError, NotFoundError } from '../../utils/errors';
 
-export async function refreshSession({ refreshToken }: { refreshToken: string }) {
+export async function refreshSession({ refreshToken }: { refreshToken: string }): Promise<{ accessToken: string }> {
   const sessionRepo = sessionRepository();
   const session = await sessionRepo.findOneBy({ refreshToken });
   if (!session || session.expiresAt < new Date())

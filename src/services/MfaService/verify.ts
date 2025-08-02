@@ -2,7 +2,7 @@ import { authenticator } from 'otplib';
 import { AppDataSource } from '../../config/database';
 import { User } from '../../entities/User';
 
-export async function verifyMfa(userId: string, token: string) {
+export async function verifyMfa(userId: string, token: string): Promise<boolean> {
   const userRepo = AppDataSource.getRepository(User);
   const user = await userRepo
     .createQueryBuilder('user')

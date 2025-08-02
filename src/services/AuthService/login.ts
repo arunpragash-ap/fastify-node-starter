@@ -14,7 +14,7 @@ export async function loginWithMfaSupport({
 }: {
   identifier: string;
   password: string;
-}) {
+}): Promise<{ mfaRequired: boolean; mfaToken?: string; accessToken?: string; refreshToken?: string }> {
   const userRepo = userRepository();
   const user = await userRepo.findOne({
     where: [{ email: identifier }, { username: identifier }],

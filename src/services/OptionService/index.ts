@@ -4,7 +4,7 @@ import { CreateOrUpdateOptionDTO } from "../../types/options";
 
 
 export class OptionService {
-  static async createOrUpdate(data: CreateOrUpdateOptionDTO, userId: string) {
+  static async createOrUpdate(data: CreateOrUpdateOptionDTO, userId: string): Promise<Option> {
     
     if (!data.id || data.id === 0) {
       // Create flow
@@ -41,11 +41,11 @@ export class OptionService {
     }
   }
 
-  static async getAllMinimal() {
+  static async getAllMinimal(): Promise<Option[]> {
     return await OptionRepository.findAllMinimal();
   }
 
-  static async getByType(type: string) {
+  static async getByType(type: string): Promise<Option[]> {
     return await OptionRepository.findByType(type);
   }
 }

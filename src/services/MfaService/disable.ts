@@ -2,7 +2,7 @@ import { authenticator } from 'otplib';
 import { AppDataSource } from '../../config/database';
 import { User } from '../../entities/User';
 
-export async function disableMfa(userId: string, token: string) {
+export async function disableMfa(userId: string, token: string): Promise<boolean> {
   const userRepo = AppDataSource.getRepository(User);
   const user = await userRepo
     .createQueryBuilder('user')
@@ -15,7 +15,7 @@ export async function disableMfa(userId: string, token: string) {
   const isValid = authenticator.check(token, user.mfaSecret);
   if (!isValid) throw new Error('Invalid MFA token');
 
-  user.mfaSecret = null as any;
+  user.mfaSecret = undefined;
   user.mfaEnabled = false;
   await userRepo.save(user);
   return true;

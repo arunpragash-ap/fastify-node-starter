@@ -7,7 +7,7 @@ import logoutRoute from "./logout";
 import emailVerificationRoutes from "./emailVerification";
 import forgotPasswordRoutes from "./forgotPassword";
 
-export default async function authRoutes(fastify: FastifyInstance) {
+export default async function authRoutes(fastify: FastifyInstance): Promise<void> {
 
   fastify.register(registerRoute);
   fastify.register(loginRoute);

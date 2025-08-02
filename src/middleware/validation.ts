@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
-export const validateRequest = (schema: any) => async (request: FastifyRequest, reply: FastifyReply) => {
+export const validateRequest = (_schema: unknown) => async (_request: FastifyRequest, _reply: FastifyReply): Promise<void> => {
   // TODO: Implement request validation using Zod
   return;
 };

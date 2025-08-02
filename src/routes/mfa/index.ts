@@ -4,7 +4,7 @@ import verifyMfaRoute from "./verifyMfa";
 import disableMfaRoute from "./disableMfa";
 import statusMfaRoute from "./statusMfa";
 
-export default async function mfaRoutes(fastify: FastifyInstance) {
+export default async function mfaRoutes(fastify: FastifyInstance): Promise<void> {
   fastify.register(setupMfaRoute);
   fastify.register(verifyMfaRoute);
   fastify.register(disableMfaRoute);

@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { logout } from "../../services/AuthService";
 
-export default async function logoutRoute(app: FastifyInstance) {
+export default async function logoutRoute(app: FastifyInstance): Promise<void> {
 
   app.post("/logout", async (request, reply) => {
     try {
@@ -14,7 +14,7 @@ export default async function logoutRoute(app: FastifyInstance) {
       await logout({ refreshToken });
       return reply.send({ success: true, message: "Logged out successfully." });
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       reply.status(err.statusCode || 400).send({ error: err.message || "Logout failed" });
     }
   });

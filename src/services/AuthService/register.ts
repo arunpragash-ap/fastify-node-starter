@@ -3,8 +3,6 @@ import { hashPassword } from '../../utils/password';
 import { sendEmail } from '../../utils/email';
 import { generateVerificationCode } from '../../utils/generateCode';
 import { EMAIL_VERIFICATION_EXPIRY_MINUTES } from '../../constants/auth';
-import { NotFoundError } from '../../utils/errors';
-
 export async function registerWithCode({
   username,
   email,
@@ -13,7 +11,7 @@ export async function registerWithCode({
   username: string;
   email: string;
   password: string;
-}) {
+}): Promise<{ id: string; email: string; username: string }> {
   const userRepo = userRepository();
   const existing = await userRepo.findOne({ where: [{ username }, { email }] });
   if (existing) throw new Error('Username or email already exists.');

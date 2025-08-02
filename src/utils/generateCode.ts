@@ -1,4 +1,4 @@
-export function generateVerificationCode(length = 6) {
+export function generateVerificationCode(length = 6): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
   let code = '';
   for (let i = 0; i < length; i++) {
@@ -7,6 +7,6 @@ export function generateVerificationCode(length = 6) {
   return code;
 }
 
-export function generateOtp() {
+export function generateOtp(): string {
   return (Math.floor(100000 + Math.random() * 900000)).toString();
 }

@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { registerWithCode } from "../../services/AuthService";
 
-export default async function registerRoute(app: FastifyInstance) {
+export default async function registerRoute(app: FastifyInstance): Promise<void> {
 
   app.post("/register", async (request, reply) => {
     try {
@@ -26,7 +26,7 @@ export default async function registerRoute(app: FastifyInstance) {
         message: "User registered. Please check your email for the verification code.",
       });
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       reply.status(err.statusCode || 400).send({ error: err.message || "Registration failed" });
     }
   });

@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { resendVerificationCode, sendEmailVerification, verifyEmail, verifyEmailWithCode } from "../../services/AuthService";
 
-export default async function emailVerificationRoutes(app: FastifyInstance) {
+export default async function emailVerificationRoutes(app: FastifyInstance): Promise<void> {
 
   app.post("/email/send-verification", async (request, reply) => {
     try {
@@ -11,8 +11,9 @@ export default async function emailVerificationRoutes(app: FastifyInstance) {
       await sendEmailVerification({ userId });
       return reply.send({ success: true, message: "Verification email sent." });
 
-    } catch (err: any) {
-      reply.status(err.statusCode || 400).send({ error: err.message || "Send verification failed" });
+    } catch (err: unknown) {
+      const error = err as { statusCode?: number; message?: string };
+      reply.status(error.statusCode || 400).send({ error: error.message || "Send verification failed" });
     }
   });
 
@@ -24,8 +25,9 @@ export default async function emailVerificationRoutes(app: FastifyInstance) {
       await verifyEmail({ token });
       return reply.send({ success: true, message: "Email verified successfully." });
 
-    } catch (err: any) {
-      reply.status(err.statusCode || 400).send({ error: err.message || "Email verification failed" });
+    } catch (err: unknown) {
+      const error = err as { statusCode?: number; message?: string };
+      reply.status(error.statusCode || 400).send({ error: error.message || "Email verification failed" });
     }
   });
 
@@ -37,8 +39,9 @@ export default async function emailVerificationRoutes(app: FastifyInstance) {
       await verifyEmailWithCode({ email, code });
       return reply.send({ success: true, message: "Email verified successfully." });
 
-    } catch (err: any) {
-      reply.status(err.statusCode || 400).send({ error: err.message || "Email verification failed" });
+    } catch (err: unknown) {
+      const error = err as { statusCode?: number; message?: string };
+      reply.status(error.statusCode || 400).send({ error: error.message || "Email verification failed" });
     }
   });
 
@@ -50,8 +53,9 @@ export default async function emailVerificationRoutes(app: FastifyInstance) {
       await resendVerificationCode({ email });
       return reply.send({ success: true, message: "Verification code resent." });
 
-    } catch (err: any) {
-      reply.status(err.statusCode || 400).send({ error: err.message || "Resend verification code failed" });
+    } catch (err: unknown) {
+      const error = err as { statusCode?: number; message?: string };
+      reply.status(error.statusCode || 400).send({ error: error.message || "Resend verification code failed" });
     }
   });
 }

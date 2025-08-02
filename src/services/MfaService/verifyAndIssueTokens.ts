@@ -5,7 +5,7 @@ import { User } from '../../entities/User';
 import { Session } from '../../entities/Session';
 import { signJwt } from '../../utils/jwt';
 
-export async function verifyAndIssueTokens(userId: string, mfaCode: string) {
+export async function verifyAndIssueTokens(userId: string, mfaCode: string): Promise<{ accessToken: string; refreshToken: string }> {
   const userRepo = AppDataSource.getRepository(User);
   const sessionRepo = AppDataSource.getRepository(Session);
   const user = await userRepo

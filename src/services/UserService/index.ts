@@ -1,15 +1,15 @@
 export class UserService {
   // TODO: Inject dependencies (DB, etc.)
 
-  async getProfile() {
+  async getProfile(): Promise<void> {
     // TODO: Implement get profile logic
   }
 
-  async updateProfile() {
+  async updateProfile(): Promise<void> {
     // TODO: Implement update profile logic
   }
 
-  async changePassword() {
+  async changePassword(): Promise<void> {
     // TODO: Implement change password logic
   }
 }

@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { loginWithMfaSupport } from "../../services/AuthService";
 
-export default async function loginRoute(app: FastifyInstance) {
+export default async function loginRoute(app: FastifyInstance): Promise<void> {
   
 
   app.post("/login", async (request, reply) => {
@@ -17,7 +17,7 @@ export default async function loginRoute(app: FastifyInstance) {
       }
       return reply.send(result);
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       reply.status(err.statusCode || 400).send({ error: err.message || "Login failed" });
     }
   });

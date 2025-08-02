@@ -3,7 +3,7 @@ import qrcode from 'qrcode';
 import { AppDataSource } from '../../config/database';
 import { User } from '../../entities/User';
 
-export async function setupMfa(userId: string) {
+export async function setupMfa(userId: string): Promise<{ secret: string; qr: string }> {
   const userRepo = AppDataSource.getRepository(User);
   const user = await userRepo.findOneBy({ id: userId });
   if (!user) throw new Error('User not found');

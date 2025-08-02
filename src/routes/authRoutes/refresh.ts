@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { refreshSession } from "../../services/AuthService";
 
-export default async function refreshRoute(app: FastifyInstance) {
+export default async function refreshRoute(app: FastifyInstance): Promise<void> {
 
   app.post("/refresh", async (request, reply) => {
     try {
@@ -14,7 +14,7 @@ export default async function refreshRoute(app: FastifyInstance) {
       const result = await refreshSession({ refreshToken });
       return reply.send(result);
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       reply.status(err.statusCode || 400).send({ error: err.message || "Token refresh failed" });
     }
   });

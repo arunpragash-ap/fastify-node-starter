@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { verifyJwt } from "../../utils/jwt";
 import { verifyAndIssueTokens } from "../../services/MfaService";
 
-export default async function mfaRoutes(app: FastifyInstance) {
+export default async function mfaRoutes(app: FastifyInstance): Promise<void> {
 
   app.post("/mfa-verify", async (request, reply) => {
     try {
@@ -20,7 +20,7 @@ export default async function mfaRoutes(app: FastifyInstance) {
       const result = await verifyAndIssueTokens(mfaPayload.userId, mfaCode);
       return reply.send(result);
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       reply.status(err.statusCode || 400).send({ error: err.message || "MFA verification failed" });
     }
   });

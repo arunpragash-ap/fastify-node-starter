@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { authenticate } from "../../middleware/auth";
 import { disableMfa } from "../../services/MfaService";
 
-export default async function disableMfaRoute(app: FastifyInstance) {
+export default async function disableMfaRoute(app: FastifyInstance): Promise<void> {
 
   app.post("/disable", { preHandler: authenticate }, async (request, reply) => {
     try {
@@ -14,7 +14,7 @@ export default async function disableMfaRoute(app: FastifyInstance) {
 
       await disableMfa(userId, token);
       return reply.send({ success: true });
-    } catch (err: any) {
+    } catch (err: unknown) {
       return reply.status(400).send({ error: err.message || "MFA disable failed" });
     }
   });

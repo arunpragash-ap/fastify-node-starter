@@ -9,8 +9,7 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PASS,
   },
 });
-console.log(process.env.SMTP_HOST)
-export async function sendEmail(to: string, subject: string, html: string) {
+export async function sendEmail(to: string, subject: string, html: string): Promise<unknown> {
   return transporter.sendMail({
     from: process.env.SMTP_FROM || process.env.SMTP_USER,
     to,

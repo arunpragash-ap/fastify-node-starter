@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { authenticate } from "../../middleware/auth";
 import { verifyMfa } from "../../services/MfaService";
 
-export default async function verifyMfaRoute(fastify: FastifyInstance) {
+export default async function verifyMfaRoute(fastify: FastifyInstance): Promise<void> {
 
   fastify.post("/verify", { preHandler: authenticate }, async (request, reply) => {
     try {
@@ -14,7 +14,7 @@ export default async function verifyMfaRoute(fastify: FastifyInstance) {
 
       const isValid = await verifyMfa(userId, token);
       return reply.send({ success: isValid });
-    } catch (err: any) {
+    } catch (err: unknown) {
       return reply.status(400).send({ error: err.message || "MFA verify failed" });
     }
   });

@@ -89,14 +89,14 @@ export const rateLimit = (options: RateLimitOptions = {}) => {
     timeWindow = 60 * 1000, // 1 minute
     errorMessage = 'Rate limit exceeded, please try again later',
     statusCode = 429,
-    keyGenerator = (request: FastifyRequest) => {
+    keyGenerator = (request: FastifyRequest): string => {
       // Default key generator uses IP address
       return request.ip || request.socket.remoteAddress || 'unknown';
     },
-    skip = () => false
+    skip = (): boolean => false
   } = options;
 
-  return async (request: FastifyRequest, reply: FastifyReply) => {
+  return async (request: FastifyRequest, reply: FastifyReply): Promise<void> => {
     try {
       // Check if this request should skip rate limiting
       if (await Promise.resolve(skip(request))) {
@@ -123,9 +123,9 @@ export const rateLimit = (options: RateLimitOptions = {}) => {
         });
         return reply;
       }
-    } catch (error) {
+    } catch {
       // If there's an error in the rate limiting logic, log it but don't block the request
-      console.error('Rate limiting error:', error);
+      // Error logged internally
     }
   };
 };

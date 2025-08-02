@@ -5,8 +5,8 @@ import usersRoutes from './users';
 import mfaRoutes from './mfa/index';
 import optionRoutes from './optionRoutes/option.routes';
 
-export default async function (fastify: FastifyInstance) {
-  fastify.get('/', async (request, reply) => {
+export default async function (fastify: FastifyInstance): Promise<void> {
+  fastify.get('/', async (_request, _reply) => {
     return { route: 'index' };
   });
 

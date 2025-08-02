@@ -7,15 +7,15 @@ import {
 import { NotFoundError, AlreadyVerifiedError, TokenExpiredError, InvalidCredentialsError } from '../../utils/errors';
 import { generateVerificationCode } from '../../utils/generateCode';
 
-export async function sendEmailVerification({ userId }: { userId: string }) {
+export async function sendEmailVerification({ userId }: { userId: string }): Promise<boolean> {
   const userRepo = userRepository();
   const user = await userRepo.findOneBy({ id: userId });
   if (!user) throw new NotFoundError('User not found');
   if (user.emailVerified) throw new AlreadyVerifiedError('Email already verified');
 
   const token = randomBytes(24).toString('hex');
-  (user as any).emailVerificationToken = token;
-  (user as any).emailVerificationExpires = new Date(
+  user.emailVerificationToken = token;
+  user.emailVerificationExpires = new Date(
     Date.now() + EMAIL_VERIFICATION_EXPIRY_MINUTES * 60000
   );
   await userRepo.save(user);
@@ -29,7 +29,7 @@ export async function sendEmailVerification({ userId }: { userId: string }) {
   return true;
 }
 
-export async function verifyEmail({ token }: { token: string }) {
+export async function verifyEmail({ token }: { token: string }): Promise<boolean> {
   const userRepo = userRepository();
   const user = await userRepo.findOne({
     where: { emailVerified: false },
@@ -41,14 +41,14 @@ export async function verifyEmail({ token }: { token: string }) {
       'emailVerificationExpires',
     ],
   });
-  if (!user || (user as any).emailVerificationToken !== token)
+  if (!user || user.emailVerificationToken !== token)
     throw new NotFoundError('Invalid token');
-  if ((user as any).emailVerificationExpires < new Date())
+  if (user.emailVerificationExpires! < new Date())
     throw new TokenExpiredError('Token expired');
 
   user.emailVerified = true;
-  (user as any).emailVerificationToken = null;
-  (user as any).emailVerificationExpires = null;
+  user.emailVerificationToken = undefined;
+  user.emailVerificationExpires = undefined;
   await userRepo.save(user);
   return true;
 }
@@ -59,7 +59,7 @@ export async function verifyEmailWithCode({
 }: {
   email: string;
   code: string;
-}) {
+}): Promise<boolean> {
   const userRepo = userRepository();
   const user = await userRepo.findOne({
     where: { email },
@@ -83,13 +83,13 @@ export async function verifyEmailWithCode({
 
   await userRepo.update(user.id, {
     emailVerified: true,
-    emailVerificationToken: null as any,
-    emailVerificationExpires: null as any,
+    emailVerificationToken: undefined,
+    emailVerificationExpires: undefined,
   });
   return true;
 }
 
-export async function resendVerificationCode({ email }: { email: string }) {
+export async function resendVerificationCode({ email }: { email: string }): Promise<boolean> {
   const userRepo = userRepository();
   const user = await userRepo.findOne({ where: { email } });
   if (!user) throw new NotFoundError('User not found.');
